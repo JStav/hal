@@ -44,6 +44,7 @@ Getters are as follow:
         .request();
 ```
 
-
-
 You can add one or many permissions.
+
+
+For added flavor, use openPodBayDoors() instead of request(). They do the same thing.
