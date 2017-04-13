@@ -1,4 +1,4 @@
-package com.weatherflow.permissionutils;
+package com.stav.permissionutils;
 
 
 public class PermissionResult {

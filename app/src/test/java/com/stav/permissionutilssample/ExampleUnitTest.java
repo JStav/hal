@@ -1,4 +1,4 @@
-package com.weatherflow.permissionutilssample;
+package com.stav.permissionutilssample;
 
 import org.junit.Test;
 

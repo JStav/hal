@@ -1,4 +1,4 @@
-package com.weatherflow.permissionutils.logging;
+package com.stav.permissionutils.logging;
 
 import timber.log.Timber;
 

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PermissionUtilsSample.iml" filepath="$PROJECT_DIR$/PermissionUtilsSample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PermissionUtils.iml" filepath="$PROJECT_DIR$/PermissionUtils.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/hal/hal.iml" filepath="$PROJECT_DIR$/hal/hal.iml" />
     </modules>

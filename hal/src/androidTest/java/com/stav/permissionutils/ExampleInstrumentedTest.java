@@ -1,4 +1,4 @@
-package com.weatherflow.permissionutils;
+package com.stav.permissionutils;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -19,6 +19,6 @@ import static org.junit.Assert.*;
     // Context of the app under test.
     Context appContext = InstrumentationRegistry.getTargetContext();
 
-    assertEquals("com.weatherflow.permissionutils.test", appContext.getPackageName());
+    assertEquals("com.stav.permissionutils.test", appContext.getPackageName());
   }
 }

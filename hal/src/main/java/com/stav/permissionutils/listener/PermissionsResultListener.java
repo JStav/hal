@@ -1,6 +1,6 @@
-package com.weatherflow.permissionutils.listener;
+package com.stav.permissionutils.listener;
 
-import com.weatherflow.permissionutils.PermissionResult;
+import com.stav.permissionutils.PermissionResult;
 import java.util.List;
 
 public interface PermissionsResultListener {

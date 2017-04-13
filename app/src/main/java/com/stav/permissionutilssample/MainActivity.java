@@ -1,17 +1,16 @@
-package com.weatherflow.permissionutilssample;
+package com.stav.permissionutilssample;
 
 import android.Manifest;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.weatherflow.permissionutils.Hal;
-import com.weatherflow.permissionutils.PermissionResult;
-import com.weatherflow.permissionutils.listener.PermissionsResultListener;
+import com.stav.permissionutils.Hal;
+import com.stav.permissionutils.PermissionResult;
+import com.stav.permissionutils.listener.PermissionsResultListener;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
