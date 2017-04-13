@@ -3,7 +3,7 @@
     package="com.stav.permissionutils"
 >
 
-  <application android:allowBackup="true"
+  <application
       android:label="@string/app_name"
       android:supportsRtl="true"
   >
