@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
 import com.stav.hal.listener.PermissionsResultListener;
+import com.stav.hal.listener.SinglePermissionResultListener;
 import com.stav.hal.logging.HalTree;
 
 import java.util.ArrayList;
@@ -20,13 +21,16 @@ public class Hal {
   private static final int RC_PERMISSIONS = 13;
 
   private Activity activity;
+
   private PermissionsResultListener listener;
+  private SinglePermissionResultListener singlePermissionResultListener;
 
   private Set<String> permissions;
 
   private Hal(Activity activity) {
     permissions = new HashSet<>();
     listener = new PermissionsResultListener.EmptyPermissionsResultListener();
+    singlePermissionResultListener = new SinglePermissionResultListener.EmptySinglePermissionResultListener();
     this.activity = activity;
   }
 
@@ -41,7 +45,24 @@ public class Hal {
   }
 
   public Hal withListener(PermissionsResultListener listener) {
-    this.listener = listener;
+
+    if(listener == null) {
+      this.listener = new PermissionsResultListener.EmptyPermissionsResultListener();
+    } else {
+      this.listener = listener;
+    }
+
+    return this;
+  }
+
+  public Hal withListener(SinglePermissionResultListener singlePermissionResultListener) {
+
+    if(singlePermissionResultListener == null) {
+      this.singlePermissionResultListener = new SinglePermissionResultListener.EmptySinglePermissionResultListener();
+    } else {
+      this.singlePermissionResultListener = singlePermissionResultListener;
+    }
+
     return this;
   }
 
@@ -75,12 +96,12 @@ public class Hal {
    */
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-    this.permissions.clear();
-
     if(requestCode == RC_PERMISSIONS) {
-      List<PermissionResult> permissionResults= getPermissionResults(permissions, grantResults);
-      listener.onPermissionsResult(permissionResults);
+      List<PermissionResult> permissionResults = getPermissionResults(permissions, grantResults);
+      notifyListeners(permissionResults);
     }
+
+    this.permissions.clear();
   }
 
   /**
@@ -107,6 +128,16 @@ public class Hal {
     }
 
     return permissionResults;
+  }
+
+  private void notifyListeners(List<PermissionResult> results) {
+
+    listener.onPermissionsResult(results);
+
+    if(results.size() == 1) {
+      PermissionResult result = results.get(0);
+      singlePermissionResultListener.onSinglePermissionResult(result);
+    }
   }
 
 }

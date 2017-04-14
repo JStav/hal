@@ -11,6 +11,7 @@ import butterknife.OnClick;
 import com.stav.hal.Hal;
 import com.stav.hal.PermissionResult;
 import com.stav.hal.listener.PermissionsResultListener;
+import com.stav.hal.listener.SinglePermissionResultListener;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,14 +23,14 @@ public class MainActivity extends AppCompatActivity {
 
   @OnClick(R.id.btn_request_location) public void onRequestLocationClick() {
 
-    PermissionsResultListener listener = new PermissionsResultListener() {
-      @Override public void onPermissionsResult(List<PermissionResult> permissions) {
+    SinglePermissionResultListener listener = new SinglePermissionResultListener() {
+      @Override public void onSinglePermissionResult(PermissionResult permissions) {
         String result = buildResultString(permissions);
         tvLocationPermission.setText(result);
       }
     };
 
-    requestLocationPermission(listener);
+    requestSingle(listener);
   }
 
   @OnClick(R.id.btn_request_multiple) public void onRequestMultipleClick() {
@@ -62,8 +63,11 @@ public class MainActivity extends AppCompatActivity {
     return permissions;
   }
 
+  private String buildResultString(PermissionResult result) {
+    return result.getPermission() + " : " + result.isGranted();
+  }
 
-  private void requestLocationPermission(PermissionsResultListener listener) {
+  private void requestSingle(SinglePermissionResultListener listener) {
     hal.addPermission(Manifest.permission.ACCESS_FINE_LOCATION)
         .withListener(listener)
         .openPodBayDoors();
