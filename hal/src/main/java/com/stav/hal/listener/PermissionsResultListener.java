@@ -1,6 +1,6 @@
-package com.stav.permissionutils.listener;
+package com.stav.hal.listener;
 
-import com.stav.permissionutils.PermissionResult;
+import com.stav.hal.PermissionResult;
 import java.util.List;
 
 public interface PermissionsResultListener {

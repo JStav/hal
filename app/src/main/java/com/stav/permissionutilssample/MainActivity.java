@@ -8,9 +8,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.stav.permissionutils.Hal;
-import com.stav.permissionutils.PermissionResult;
-import com.stav.permissionutils.listener.PermissionsResultListener;
+import com.stav.hal.Hal;
+import com.stav.hal.PermissionResult;
+import com.stav.hal.listener.PermissionsResultListener;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {

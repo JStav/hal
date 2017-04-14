@@ -1,4 +1,4 @@
-package com.stav.permissionutils;
+package com.stav.hal;
 
 
 public class PermissionResult {

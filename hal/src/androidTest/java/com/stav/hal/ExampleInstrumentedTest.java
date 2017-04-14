@@ -1,4 +1,4 @@
-package com.stav.permissionutils;
+package com.stav.hal;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

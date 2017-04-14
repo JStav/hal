@@ -1,4 +1,4 @@
-package com.stav.permissionutils;
+package com.stav.hal;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.stav.permissionutils;
+package com.stav.hal;
 
 import android.Manifest;
 import android.app.Activity;
@@ -6,8 +6,8 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
-import com.stav.permissionutils.listener.PermissionsResultListener;
-import com.stav.permissionutils.logging.HalTree;
+import com.stav.hal.listener.PermissionsResultListener;
+import com.stav.hal.logging.HalTree;
 
 import java.util.ArrayList;
 import java.util.HashSet;

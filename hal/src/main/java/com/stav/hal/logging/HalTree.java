@@ -1,4 +1,4 @@
-package com.stav.permissionutils.logging;
+package com.stav.hal.logging;
 
 import timber.log.Timber;
 

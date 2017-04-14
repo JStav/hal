@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-    package="com.stav.permissionutils"
+    package="com.stav.hal"
 >
 
   <application
