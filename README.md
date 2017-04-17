@@ -15,6 +15,7 @@
 2. Reroute onRequestPermissionResults callback to HAL
 ```java 
   @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     hal.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 ```
