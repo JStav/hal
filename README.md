@@ -8,7 +8,7 @@
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    hal = Hal.with(this);
+    hal = Hal.init();
   }
 ```
 
@@ -41,10 +41,10 @@ Getters are as follow:
     hal.addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
         .addPermission(Manifest.permission.READ_CONTACTS)
         .withListener(listener)
-        .request();
+        .request(this);
 ```
 
-You can add one or many permissions.
+You can add one or many permissions. The request() method allows both activities and fragments.
 
 
 For added flavor, use openPodBayDoors() instead of request(). They do the same thing.
