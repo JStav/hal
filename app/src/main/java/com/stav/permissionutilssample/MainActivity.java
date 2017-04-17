@@ -2,6 +2,7 @@ package com.stav.permissionutilssample;
 
 import android.Manifest;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -49,7 +50,16 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
-    hal = Hal.with(this);
+
+    initFragment();
+
+    hal = Hal.init();
+  }
+
+  private void initFragment() {
+    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+    ft.replace(R.id.container, new PermissionFragment());
+    ft.commit();
   }
 
   private String buildResultString(List<PermissionResult> permissionResults) {
@@ -69,20 +79,22 @@ public class MainActivity extends AppCompatActivity {
 
   private void requestSingle(SinglePermissionResultListener listener) {
     hal.addPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+        .removeListeners()
         .withListener(listener)
-        .openPodBayDoors();
+        .openPodBayDoors(this);
   }
 
   private void requestMultiple(PermissionsResultListener listener) {
-    hal.addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        .addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    hal.addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
         .addPermission(Manifest.permission.READ_CONTACTS)
+        .removeListeners()
         .withListener(listener)
-        .openPodBayDoors();
+        .openPodBayDoors(this);
   }
 
   @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
       @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     hal.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 }

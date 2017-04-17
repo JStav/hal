@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
+import android.support.v4.app.Fragment;
 import com.stav.hal.listener.PermissionsResultListener;
 import com.stav.hal.listener.SinglePermissionResultListener;
 import com.stav.hal.logging.HalTree;
@@ -20,28 +21,19 @@ public class Hal {
 
   private static final int RC_PERMISSIONS = 13;
 
-  private Activity activity;
-
   private PermissionsResultListener listener;
   private SinglePermissionResultListener singlePermissionResultListener;
 
   private Set<String> permissions;
 
-  private Hal(Activity activity) {
+  private Hal() {
     permissions = new HashSet<>();
     listener = new PermissionsResultListener.EmptyPermissionsResultListener();
     singlePermissionResultListener = new SinglePermissionResultListener.EmptySinglePermissionResultListener();
-    this.activity = activity;
   }
 
-  /**
-   * Initialize HAL
-   * @param activity Activity
-   * @return Hal instance
-   */
-  public static Hal with(Activity activity) {
-    Timber.d("Good morning, Dave.");
-    return new Hal(activity);
+  public static Hal init() {
+    return new Hal();
   }
 
   public Hal withListener(PermissionsResultListener listener) {
@@ -66,6 +58,12 @@ public class Hal {
     return this;
   }
 
+  public Hal removeListeners() {
+    listener = new PermissionsResultListener.EmptyPermissionsResultListener();
+    singlePermissionResultListener = new SinglePermissionResultListener.EmptySinglePermissionResultListener();
+    return this;
+  }
+
   /** Add a permission to request. Must be a dangerous permission to be
    * included in the pop up dialog.
    * @param permission One of {@link Manifest.permission}
@@ -80,16 +78,28 @@ public class Hal {
    * Request the added permissions
    * @return Hal instance
    */
-  public Hal request() {
+  public Hal request(Activity activity) {
     ActivityCompat.requestPermissions(activity, getPermissionsAsArray(), RC_PERMISSIONS);
     return this;
   }
 
-  /** Same thing as {@link Hal#request()}, but more thematic given the library's name
+  public Hal request(Fragment fragment) {
+    fragment.requestPermissions(getPermissionsAsArray(), RC_PERMISSIONS);
+    return this;
+  }
+
+  /** Same thing as {@link Hal#request(Activity)}, but more thematic given the library's name
    * @return Hal instance
    */
-  public Hal openPodBayDoors() {
-    return request();
+  public Hal openPodBayDoors(Activity activity) {
+    return request(activity);
+  }
+
+  /** Same thing as {@link Hal#request(Fragment)}, but more thematic given the library's name
+   * @return Hal instance
+   */
+  public Hal openPodBayDoors(Fragment fragment) {
+    return request(fragment);
   }
 
   /** Intercept {@link Activity#onRequestPermissionsResult(int, String[], int[])}
