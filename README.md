@@ -1,6 +1,6 @@
 # hal
 
-1. Generate a HAL instance and attach it to your activity
+1. Generate a HAL instance.
 
 ```java
   Hal hal;
@@ -8,13 +8,14 @@
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    hal = Hal.with(this);
+    hal = Hal.init();
   }
 ```
 
 2. Reroute onRequestPermissionResults callback to HAL
 ```java 
   @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     hal.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 ```
@@ -41,10 +42,10 @@ Getters are as follow:
     hal.addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
         .addPermission(Manifest.permission.READ_CONTACTS)
         .withListener(listener)
-        .request();
+        .request(this);
 ```
 
-You can add one or many permissions.
+You can add one or many permissions. The request() method allows both activities and fragments.
 
 
 For added flavor, use openPodBayDoors() instead of request(). They do the same thing.
