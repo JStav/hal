@@ -1,6 +1,6 @@
 # hal
 
-1. Generate a HAL instance and attach it to your activity
+1. Generate a HAL instance.
 
 ```java
   Hal hal;
