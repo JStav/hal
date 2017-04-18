@@ -11,6 +11,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.stav.hal.Hal;
 import com.stav.hal.PermissionResult;
+import com.stav.hal.action.Action;
 import com.stav.hal.listener.PermissionsResultListener;
 import com.stav.hal.listener.SinglePermissionResultListener;
 import java.util.List;
@@ -44,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
     };
 
     requestMultiple(listener);
+  }
+
+  @OnClick(R.id.btn_request_enable_bt) public void onEnableBtClick() {
+    Hal.request(this, Action.ACTION_ENABLE_BLUETOOTH);
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {

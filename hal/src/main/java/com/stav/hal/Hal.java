@@ -2,11 +2,14 @@ package com.stav.hal;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
 import android.support.v4.app.Fragment;
+import com.stav.hal.action.Action;
+import com.stav.hal.action.ActionFactory;
 import com.stav.hal.listener.PermissionsResultListener;
 import com.stav.hal.listener.SinglePermissionResultListener;
 import com.stav.hal.logging.HalTree;
@@ -19,7 +22,8 @@ import timber.log.Timber;
 
 public class Hal {
 
-  private static final int RC_PERMISSIONS = 13;
+  private static final int BASE = 10;
+  private static final int RC_PERMISSIONS = BASE + 1;
 
   private PermissionsResultListener listener;
   private SinglePermissionResultListener singlePermissionResultListener;
@@ -75,7 +79,8 @@ public class Hal {
   }
 
   /**
-   * Request the added permissions
+   * Request the added permissions. Make sure to override {@link Activity#onRequestPermissionsResult(int, String[], int[])}
+   * and reroute its calls to Hal's {@link Hal#onRequestPermissionsResult(int, String[], int[])}.
    * @return Hal instance
    */
   public Hal request(Activity activity) {
@@ -83,9 +88,26 @@ public class Hal {
     return this;
   }
 
+  /**
+   * Requests permissions in a fragment. Make sure to call super {@link Activity#onRequestPermissionsResult(int, String[], int[])}
+   * if overridden in Activity.
+   * @param fragment fragment
+   * @return Hal instance
+   */
   public Hal request(Fragment fragment) {
     fragment.requestPermissions(getPermissionsAsArray(), RC_PERMISSIONS);
     return this;
+  }
+
+  /**
+   * Execute a HAL {@link Action} based on the action code passed in.
+   * @param context Context
+   * @param actionCode Action desired
+   */
+  public static void request(Context context, int actionCode) {
+    new ActionFactory(context)
+        .generate(actionCode)
+        .executeAction();
   }
 
   /** Same thing as {@link Hal#request(Activity)}, but more thematic given the library's name
