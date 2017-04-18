@@ -49,3 +49,17 @@ You can add one or many permissions. The request() method allows both activities
 
 
 For added flavor, use openPodBayDoors() instead of request(). They do the same thing.
+
+
+## Actions
+Actions are miscellaneous permission related actions that aren't explicitly asking for a permission. Asking the user to enable bluetooth would be one example. 
+
+```java
+Hal.request(Context context, int actionCode);
+```
+
+Action codes can be found in the base class Action. An example call would be:
+
+```java
+Hal.request(context, Action.ACTION_ENABLE_BLUETOOTH);
+```
