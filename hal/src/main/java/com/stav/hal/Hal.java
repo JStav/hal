@@ -23,7 +23,7 @@ import timber.log.Timber;
 public class Hal {
 
   private static final int BASE = 10;
-  private static final int RC_PERMISSIONS = BASE + 1;
+  public static final int RC_PERMISSIONS = BASE + 1;
 
   private PermissionsResultListener listener;
   private SinglePermissionResultListener singlePermissionResultListener;
