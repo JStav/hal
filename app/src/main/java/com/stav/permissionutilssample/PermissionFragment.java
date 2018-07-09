@@ -2,8 +2,8 @@ package com.stav.permissionutilssample;
 
 import android.Manifest;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +35,7 @@ public class PermissionFragment extends Fragment {
 
     hal.withListener(listener)
         .addPermission(Manifest.permission.READ_SMS)
-        .request(this);
+        .request(getActivity());
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,10 +46,5 @@ public class PermissionFragment extends Fragment {
     hal = Hal.init();
 
     return v;
-  }
-
-  @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-      @NonNull int[] grantResults) {
-    hal.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 }

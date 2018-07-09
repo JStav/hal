@@ -1,7 +1,6 @@
 package com.stav.permissionutilssample;
 
 import android.Manifest;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,8 +16,6 @@ import com.stav.hal.listener.SinglePermissionResultListener;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-  private Hal hal;
 
   @BindView(R.id.tv_location_permission) TextView tvLocationPermission;
   @BindView(R.id.tv_multiple_permissions) TextView tvMultiplePermissions;
@@ -57,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     initFragment();
-
-    hal = Hal.init();
   }
 
   private void initFragment() {
@@ -83,23 +78,15 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void requestSingle(SinglePermissionResultListener listener) {
-    hal.addPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-        .removeListeners()
+    Hal.init().addPermission(Manifest.permission.ACCESS_FINE_LOCATION)
         .withListener(listener)
-        .openPodBayDoors(this);
+        .request(this);
   }
 
   private void requestMultiple(PermissionsResultListener listener) {
-    hal.addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    Hal.init().addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
         .addPermission(Manifest.permission.READ_CONTACTS)
-        .removeListeners()
         .withListener(listener)
-        .openPodBayDoors(this);
-  }
-
-  @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-      @NonNull int[] grantResults) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    hal.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        .request(this);
   }
 }

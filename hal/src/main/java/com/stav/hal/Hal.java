@@ -3,11 +3,8 @@ package com.stav.hal;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import com.stav.hal.action.Action;
 import com.stav.hal.action.ActionFactory;
 import com.stav.hal.listener.PermissionsResultListener;
@@ -16,7 +13,6 @@ import com.stav.hal.logging.HalTree;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import timber.log.Timber;
 
@@ -79,24 +75,19 @@ public class Hal {
   }
 
   /**
-   * Request the added permissions. Make sure to override {@link Activity#onRequestPermissionsResult(int, String[], int[])}
-   * and reroute its calls to Hal's {@link Hal#onRequestPermissionsResult(int, String[], int[])}.
-   * @return Hal instance
+   * Request the added permissions.
    */
-  public Hal request(Activity activity) {
-    ActivityCompat.requestPermissions(activity, getPermissionsAsArray(), RC_PERMISSIONS);
-    return this;
-  }
+  public void request(Activity activity) {
+    PermissionRequestFragment fragment = createRequestFragment();
 
-  /**
-   * Requests permissions in a fragment. Make sure to call super {@link Activity#onRequestPermissionsResult(int, String[], int[])}
-   * if overridden in Activity.
-   * @param fragment fragment
-   * @return Hal instance
-   */
-  public Hal request(Fragment fragment) {
-    fragment.requestPermissions(getPermissionsAsArray(), RC_PERMISSIONS);
-    return this;
+    if (activity instanceof AppCompatActivity) {
+      ((AppCompatActivity) activity).getSupportFragmentManager()
+          .beginTransaction()
+          .add(fragment, null)
+          .commit();
+    } else {
+      Timber.e(new ClassCastException("Activity must be an AppCompatActivity"));
+    }
   }
 
   /**
@@ -110,32 +101,6 @@ public class Hal {
         .executeAction();
   }
 
-  /** Same thing as {@link Hal#request(Activity)}, but more thematic given the library's name
-   * @return Hal instance
-   */
-  public Hal openPodBayDoors(Activity activity) {
-    return request(activity);
-  }
-
-  /** Same thing as {@link Hal#request(Fragment)}, but more thematic given the library's name
-   * @return Hal instance
-   */
-  public Hal openPodBayDoors(Fragment fragment) {
-    return request(fragment);
-  }
-
-  /** Intercept {@link Activity#onRequestPermissionsResult(int, String[], int[])}
-   */
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-    if(requestCode == RC_PERMISSIONS) {
-      List<PermissionResult> permissionResults = getPermissionResults(permissions, grantResults);
-      notifyListeners(permissionResults);
-    }
-
-    this.permissions.clear();
-  }
-
   /**
    * Must be called in Application onCreate
    * Log debug statements, only works if in debug build.
@@ -146,30 +111,11 @@ public class Hal {
     }
   }
 
-  private String[] getPermissionsAsArray() {
-    return permissions.toArray(new String[permissions.size()]);
+  private PermissionRequestFragment createRequestFragment() {
+    PermissionRequestFragment fragment = PermissionRequestFragment.newInstance(new ArrayList<>(permissions));
+    fragment.setListener(listener);
+    fragment.setSinglePermissionResultListener(singlePermissionResultListener);
+
+    return fragment;
   }
-
-  private List<PermissionResult> getPermissionResults(String[] permissions, int[] grantResults) {
-
-    List<PermissionResult> permissionResults = new ArrayList<>();
-
-    for(int i = 0; i < permissions.length; i++) {
-      boolean isGranted = grantResults[i] == PackageManager.PERMISSION_GRANTED;
-      permissionResults.add(new PermissionResult(isGranted, permissions[i]));
-    }
-
-    return permissionResults;
-  }
-
-  private void notifyListeners(List<PermissionResult> results) {
-
-    listener.onPermissionsResult(results);
-
-    if(results.size() == 1) {
-      PermissionResult result = results.get(0);
-      singlePermissionResultListener.onSinglePermissionResult(result);
-    }
-  }
-
 }
